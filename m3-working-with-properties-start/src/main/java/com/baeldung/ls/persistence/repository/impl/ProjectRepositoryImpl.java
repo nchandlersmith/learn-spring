@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.baeldung.ls.persistence.model.Project;
@@ -12,13 +15,17 @@ import com.baeldung.ls.persistence.repository.IProjectRepository;
 @Repository
 public class ProjectRepositoryImpl implements IProjectRepository {
 
+    @Value("${project.prefix}")
+    private String prefix;
+
+    @Value("${project.suffix}")
+    private Integer suffix;
+
     private List<Project> projects = new ArrayList<>();
 
     @Override
     public Optional<Project> findById(Long id) {
-        return projects.stream()
-            .filter(p -> p.getId() == id)
-            .findFirst();
+        return projects.stream().filter(p -> p.getId() == id).findFirst();
     }
 
     @Override
@@ -32,6 +39,15 @@ public class ProjectRepositoryImpl implements IProjectRepository {
             projects.add(newProject);
         }
         return project;
+    }
+
+    private void updateInternalId(Project project) {
+        LOG.info("Prepending prefix " + prefix);
+        LOG.info("Appending suffix " + suffix);
+
+        project.setInternalId(prefix + "-" + project.getId() + "-" + suffix);
+
+        LOG.info("Generated internal id: " + project.getInternalId());
     }
 
 }
