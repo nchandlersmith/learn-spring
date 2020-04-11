@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LsApp<scopes-of-spring-beans-lesson-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.baeldung.ls.LsApp",
+            "projectName": "scopes-of-spring-beans-lesson-start",
+            "args": ""
+        }
+    ]
+}

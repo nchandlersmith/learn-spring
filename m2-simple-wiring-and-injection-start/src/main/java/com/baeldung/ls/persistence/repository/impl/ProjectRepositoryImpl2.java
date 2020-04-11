@@ -1,15 +1,15 @@
 package com.baeldung.ls.persistence.repository.impl;
 
-import com.baeldung.ls.persistence.model.Project;
-import com.baeldung.ls.persistence.repository.IProjectRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProjectRepositoryImpl implements IProjectRepository {
+import com.baeldung.ls.persistence.model.Project;
+import com.baeldung.ls.persistence.repository.IProjectRepository;
 
-    private List<Project> projects = new ArrayList<>();
+public class ProjectRepositoryImpl2 implements IProjectRepository {
+
+    List<Project> projects = new ArrayList<>();
 
     @Override
     public Optional<Project> findById(Long id) {
