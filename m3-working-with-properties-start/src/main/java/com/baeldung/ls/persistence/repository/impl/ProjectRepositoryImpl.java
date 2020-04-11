@@ -15,6 +15,8 @@ import com.baeldung.ls.persistence.repository.IProjectRepository;
 @Repository
 public class ProjectRepositoryImpl implements IProjectRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectRepositoryImpl.class);
+
     @Value("${project.prefix}")
     private String prefix;
 
