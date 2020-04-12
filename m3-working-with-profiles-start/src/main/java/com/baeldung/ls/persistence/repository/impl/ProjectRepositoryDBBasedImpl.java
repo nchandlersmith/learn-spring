@@ -12,20 +12,20 @@ import org.springframework.stereotype.Repository;
 import com.baeldung.ls.persistence.model.Project;
 import com.baeldung.ls.persistence.repository.IProjectRepository;
 
-@Profile("dev")
 @Repository
-public class ProjectRepositoryImpl implements IProjectRepository {
+@Profile("prod")
+public class ProjectRepositoryDBBasedImpl implements IProjectRepository {
 
     List<Project> projects = new ArrayList<>();
-    private static final Logger LOG = LoggerFactory.getLogger(ProjectRepositoryImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectRepositoryDBBasedImpl.class);
 
-    public ProjectRepositoryImpl() {
+    public ProjectRepositoryDBBasedImpl() {
         super();
     }
 
     @Override
     public Optional<Project> findById(Long id) {
-        LOG.info("Retreiving Project using ProjectRepositoryImpl");
+        LOG.info("Retreiving Project using ProjectRepositoryDBBasedImpl");
         return projects.stream().filter(p -> p.getId() == id).findFirst();
     }
 
