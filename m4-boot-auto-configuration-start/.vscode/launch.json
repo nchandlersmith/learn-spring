@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LsApp<boot-auto-configuration-lesson-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.baeldung.ls.LsApp",
+            "projectName": "boot-auto-configuration-lesson-start",
+            "args": ""
+        }
+    ]
+}
