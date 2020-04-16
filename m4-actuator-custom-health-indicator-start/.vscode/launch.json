@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LsApp<actuator-custom-health-indicator-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.baeldung.ls.LsApp",
+            "projectName": "actuator-custom-health-indicator-start",
+            "args": ""
+        }
+    ]
+}
