@@ -5,6 +5,7 @@ import com.baeldung.ls.service.IProjectService;
 import com.baeldung.ls.web.dto.ProjectDto;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,14 +32,23 @@ public class ProjectController {
     }
 
     @PostMapping
-    public void create(@RequestBody Project newProject) {
-        this.projectService.save(newProject);
+    public void create(@RequestBody ProjectDto dto) {
+        Project entity = convertToEntity(dto);
+        this.projectService.save(entity);
     }
 
     protected ProjectDto convertToDto(Project entity) {
         ProjectDto dto = new ProjectDto(entity.getId(), entity.getName(), entity.getDateCreated());
         dto.setTasks(entity.getTasks());
         return dto;
+    }
+
+    protected Project convertToEntity(ProjectDto dto) {
+        Project project = new Project(dto.getName(), dto.getDateCreated());
+        if (!StringUtils.isEmpty(dto.getId())) {
+            project.setId(dto.getId());
+        }
+        return project;
     }
 
 }

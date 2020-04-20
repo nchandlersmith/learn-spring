@@ -12,6 +12,10 @@ public class ProjectDto {
     private LocalDate dateCreated;
     private Set<Task> tasks;
 
+    public ProjectDto() {
+
+    }
+
     public ProjectDto(Long id, String name, LocalDate dateCreated) {
         this.id = id;
         this.name = name;
