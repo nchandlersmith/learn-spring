@@ -3,14 +3,12 @@ package com.baeldung.ls.web.dto;
 import java.time.LocalDate;
 import java.util.Set;
 
-import com.baeldung.ls.persistence.model.Task;
-
 public class ProjectDto {
 
     private Long id;
     private String name;
     private LocalDate dateCreated;
-    private Set<Task> tasks;
+    private Set<TaskDto> tasks;
 
     public ProjectDto() {
 
@@ -46,11 +44,11 @@ public class ProjectDto {
         this.dateCreated = dateCreated;
     }
 
-    public Set<Task> getTasks() {
+    public Set<TaskDto> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<Task> tasks) {
+    public void setTasks(Set<TaskDto> tasks) {
         this.tasks = tasks;
     }
 

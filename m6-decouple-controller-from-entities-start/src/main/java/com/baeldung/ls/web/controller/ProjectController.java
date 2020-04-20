@@ -1,8 +1,12 @@
 package com.baeldung.ls.web.controller;
 
+import java.util.stream.Collectors;
+
 import com.baeldung.ls.persistence.model.Project;
+import com.baeldung.ls.persistence.model.Task;
 import com.baeldung.ls.service.IProjectService;
 import com.baeldung.ls.web.dto.ProjectDto;
+import com.baeldung.ls.web.dto.TaskDto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -28,7 +32,7 @@ public class ProjectController {
     public ProjectDto findOne(@PathVariable Long id) {
         Project entity = projectService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return convertToDto(entity);
+        return convertProjectToDto(entity);
     }
 
     @PostMapping
@@ -37,9 +41,9 @@ public class ProjectController {
         this.projectService.save(entity);
     }
 
-    protected ProjectDto convertToDto(Project entity) {
+    protected ProjectDto convertProjectToDto(Project entity) {
         ProjectDto dto = new ProjectDto(entity.getId(), entity.getName(), entity.getDateCreated());
-        dto.setTasks(entity.getTasks());
+        dto.setTasks(entity.getTasks().stream().map(task -> convertTaskToDto(task)).collect(Collectors.toSet()));
         return dto;
     }
 
@@ -49,6 +53,12 @@ public class ProjectController {
             project.setId(dto.getId());
         }
         return project;
+    }
+
+    protected TaskDto convertTaskToDto(Task task) {
+        TaskDto dto = new TaskDto(task.getId(), task.getName(), task.getDescription(), task.getDateCreated(),
+                task.getDueDate(), task.getStatus());
+        return dto;
     }
 
 }
