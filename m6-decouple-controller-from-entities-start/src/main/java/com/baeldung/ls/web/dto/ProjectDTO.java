@@ -5,12 +5,18 @@ import java.util.Set;
 
 import com.baeldung.ls.persistence.model.Task;
 
-public class ProjectDTO {
+public class ProjectDto {
 
     private Long id;
     private String name;
     private LocalDate dateCreated;
     private Set<Task> tasks;
+
+    public ProjectDto(Long id, String name, LocalDate dateCreated) {
+        this.id = id;
+        this.name = name;
+        this.dateCreated = dateCreated;
+    }
 
     public Long getId() {
         return id;
@@ -63,7 +69,7 @@ public class ProjectDTO {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ProjectDTO other = (ProjectDTO) obj;
+        ProjectDto other = (ProjectDto) obj;
         if (dateCreated == null) {
             if (other.dateCreated != null)
                 return false;
