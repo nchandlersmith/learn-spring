@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LsApp<expanding-our-first-controller-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.baeldung.ls.LsApp",
+            "projectName": "expanding-our-first-controller-start",
+            "args": ""
+        }
+    ]
+}
