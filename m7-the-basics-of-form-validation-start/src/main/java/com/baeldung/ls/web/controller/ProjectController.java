@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,14 +50,17 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public String getProject(@PathVariable Long id, Model model) {
-        Project project = projectService.findById(id)
-            .get();
+        Project project = projectService.findById(id).get();
         model.addAttribute("project", convertToDto(project));
         return "project";
     }
 
     @PostMapping
-    public String addProject(ProjectDto project) {
+    public String addProject(@Valid @ModelAttribute("project") ProjectDto project, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "new-project";
+        }
+
         projectService.save(convertToEntity(project));
 
         return "redirect:/projects";
@@ -62,8 +68,7 @@ public class ProjectController {
 
     @GetMapping("/{id}/add-tasks")
     public String getProjectEditPage(@PathVariable Long id, Model model) {
-        Project project = projectService.findById(id)
-            .orElse(new Project());
+        Project project = projectService.findById(id).orElse(new Project());
         model.addAttribute("project", project);
         TaskListDto tasksForm = new TaskListDto();
         for (int i = 1; i <= 3; i++) {
@@ -75,12 +80,9 @@ public class ProjectController {
 
     @PostMapping("{id}/save-tasks")
     public String saveTasks(@ModelAttribute TaskListDto tasksForm, @PathVariable Long id, Model model) {
-        Project project = projectService.findById(id)
-            .orElse(new Project());
-        projectService.addTasks(project, tasksForm.getTasks()
-            .stream()
-            .map(t -> convertTaskToEntity(t))
-            .collect(Collectors.toList()));
+        Project project = projectService.findById(id).orElse(new Project());
+        projectService.addTasks(project,
+                tasksForm.getTasks().stream().map(t -> convertTaskToEntity(t)).collect(Collectors.toList()));
         model.addAttribute("project", project);
 
         return "redirect:/projects/" + project.getId();
@@ -88,10 +90,7 @@ public class ProjectController {
 
     protected ProjectDto convertToDto(Project entity) {
         ProjectDto dto = new ProjectDto(entity.getId(), entity.getName(), entity.getDateCreated());
-        dto.setTasks(entity.getTasks()
-            .stream()
-            .map(t -> convertTaskToDto(t))
-            .collect(Collectors.toSet()));
+        dto.setTasks(entity.getTasks().stream().map(t -> convertTaskToDto(t)).collect(Collectors.toSet()));
         return dto;
     }
 
@@ -104,12 +103,14 @@ public class ProjectController {
     }
 
     protected TaskDto convertTaskToDto(Task entity) {
-        TaskDto dto = new TaskDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getDateCreated(), entity.getDueDate(), entity.getStatus());
+        TaskDto dto = new TaskDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getDateCreated(),
+                entity.getDueDate(), entity.getStatus());
         return dto;
     }
 
     protected Task convertTaskToEntity(TaskDto dto) {
-        Task task = new Task(dto.getName(), dto.getDescription(), dto.getDateCreated(), dto.getDueDate(), dto.getStatus());
+        Task task = new Task(dto.getName(), dto.getDescription(), dto.getDateCreated(), dto.getDueDate(),
+                dto.getStatus());
         if (!StringUtils.isEmpty(dto.getId())) {
             task.setId(dto.getId());
         }

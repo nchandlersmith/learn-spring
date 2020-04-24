@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LsApp<the-basics-of-form-validation-start>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.baeldung.ls.LsApp",
+            "projectName": "the-basics-of-form-validation-start",
+            "args": ""
+        }
+    ]
+}
