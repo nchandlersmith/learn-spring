@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -39,7 +40,7 @@ public class ProjectController {
     @GetMapping(value = "/{id}")
     public ProjectDto findOne(@PathVariable Long id) {
         Project entity = projectService.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return convertToDto(entity);
     }
 
@@ -51,10 +52,10 @@ public class ProjectController {
     }
 
     @GetMapping
-    public Collection<ProjectDto> findAll() {
-        Iterable<Project> allProjects = this.projectService.findAll();
+    public Collection<ProjectDto> findProjects(@RequestParam(name = "name", defaultValue = "") String name) {
+        Iterable<Project> filteredProjects = this.projectService.findByName(name);
         List<ProjectDto> projectDtos = new ArrayList<>();
-        allProjects.forEach(p -> projectDtos.add(convertToDto(p)));
+        filteredProjects.forEach(p -> projectDtos.add(convertToDto(p)));
         return projectDtos;
     }
 
@@ -72,10 +73,7 @@ public class ProjectController {
 
     protected ProjectDto convertToDto(Project entity) {
         ProjectDto dto = new ProjectDto(entity.getId(), entity.getName(), entity.getDateCreated());
-        dto.setTasks(entity.getTasks()
-            .stream()
-            .map(t -> convertTaskToDto(t))
-            .collect(Collectors.toSet()));
+        dto.setTasks(entity.getTasks().stream().map(t -> convertTaskToDto(t)).collect(Collectors.toSet()));
 
         return dto;
     }
@@ -89,12 +87,14 @@ public class ProjectController {
     }
 
     protected TaskDto convertTaskToDto(Task entity) {
-        TaskDto dto = new TaskDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getDateCreated(), entity.getDueDate(), entity.getStatus());
+        TaskDto dto = new TaskDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getDateCreated(),
+                entity.getDueDate(), entity.getStatus());
         return dto;
     }
 
     protected Task convertTaskToEntity(TaskDto dto) {
-        Task task = new Task(dto.getName(), dto.getDescription(), dto.getDateCreated(), dto.getDueDate(), dto.getStatus());
+        Task task = new Task(dto.getName(), dto.getDescription(), dto.getDateCreated(), dto.getDueDate(),
+                dto.getStatus());
         if (!StringUtils.isEmpty(dto.getId())) {
             task.setId(dto.getId());
         }
