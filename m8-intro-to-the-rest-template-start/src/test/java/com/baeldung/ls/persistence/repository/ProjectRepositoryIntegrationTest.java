@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.baeldung.ls.persistence.model.Project;
 
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProjectRepositoryIntegrationTest {
 
     @Autowired
