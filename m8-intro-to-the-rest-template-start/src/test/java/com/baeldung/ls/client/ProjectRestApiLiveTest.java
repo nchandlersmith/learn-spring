@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.time.LocalDate;
+
 import javax.annotation.PostConstruct;
 
 import com.baeldung.ls.web.dto.ProjectDto;
@@ -47,6 +49,13 @@ public class ProjectRestApiLiveTest {
         } catch (Exception e) {
             assertEquals(HttpClientErrorException.NotFound.class, e.getClass());
         }
+    }
+
+    @Test
+    public void givenNewProject_whenCreated_thenSuccess() {
+        ProjectDto newProject = new ProjectDto(4L, "Client Project", LocalDate.now());
+        ResponseEntity<Void> response = restTemplate.postForEntity(baseUrl, newProject, void.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
 }
