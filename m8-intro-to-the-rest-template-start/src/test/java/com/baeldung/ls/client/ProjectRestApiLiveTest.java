@@ -3,7 +3,6 @@ package com.baeldung.ls.client;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProjectRestApiLiveTest {
@@ -45,7 +43,7 @@ public class ProjectRestApiLiveTest {
     @Test()
     public void givenProjentNotExists_whenGet_thenNotFoundStatus() {
         try {
-            ResponseEntity<ProjectDto> response = restTemplate.getForEntity(baseUrl + "10", ProjectDto.class);
+            restTemplate.getForEntity(baseUrl + "10", ProjectDto.class);
         } catch (Exception e) {
             assertEquals(HttpClientErrorException.NotFound.class, e.getClass());
         }
